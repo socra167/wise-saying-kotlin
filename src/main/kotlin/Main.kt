@@ -4,9 +4,18 @@ fun main() {
     println("== 명언 앱 ==")
     while (true) {
         print("입력)")
-        val input = readlnOrNull() ?: "" // null 이 들어올 수 있는 입력을 받는다. elvis 로 null 일 경우 값 지정
-        if (input == "종료") {
-            break
+        val input = readlnOrNull() ?: ""
+
+        when (input) {
+            "종료" -> break;
+            "등록" -> {
+                print("명언: ")
+                val saying = readlnOrNull() ?: ""
+                print("작가: ")
+                val author = readlnOrNull() ?: ""
+
+                println("$saying : $author 명언이 등록되었습니다.")
+            }
         }
     }
 }
