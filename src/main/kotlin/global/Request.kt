@@ -4,7 +4,7 @@ class Request(
     input: String,
 ) {
     var actionName: String = ""
-    val paramMap: Map<String, String>
+    private val paramMap: Map<String, String>
 
     init {
         val inputBits = input.split("?", limit = 2)
