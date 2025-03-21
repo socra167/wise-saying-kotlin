@@ -1,23 +1,23 @@
 package com.global
 
 class Request(
-    val input: String,
+    input: String,
 ) {
     var actionName: String = ""
-    val paramMap = mutableMapOf<String, String>()
+    val paramMap: Map<String, String>
 
     init {
         val inputBits = input.split("?", limit = 2)
         actionName = inputBits[0]
 
-        if (inputBits.size == 2) {
-            val params = inputBits[1].split("&")
-            params.forEach {
-                val paramBits = it.split("=", limit = 2)
-                if (paramBits.size == 2) {
-                    paramMap[paramBits.get(0)] = paramBits.get(1)
-                }
-            }
+        paramMap = if (inputBits.size == 2) {
+            inputBits[1].split("&").associate {
+                // 동적으로 Map 을 생성해 Pair 를 생성
+                val bits = it.split("=", limit = 2)
+                bits[0] to bits[1]
+            }.toMap()
+        } else {
+            emptyMap()
         }
     }
 
