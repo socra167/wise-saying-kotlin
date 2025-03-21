@@ -16,14 +16,11 @@ class WiseSayingFileRepository : WiseSayingRepository {
         get() = AppConfig.tableDirPath.resolve("wiseSaying")
 
     override fun save(wiseSaying: WiseSaying): WiseSaying {
-        if (wiseSaying.isNew()) {
-            val new = wiseSaying.copy(id = ++lastId)
-            saveOnDisk(new)
-            return new
-        }
+        val target = if (wiseSaying.isNew()) wiseSaying.copy(id = getNextId()) else wiseSaying
 
-        saveOnDisk(wiseSaying)
-        return wiseSaying
+        return target.also {
+            saveOnDisk(target)
+        }
     }
 
     private fun saveOnDisk(wiseSaying: WiseSaying) {
@@ -42,6 +39,7 @@ class WiseSayingFileRepository : WiseSayingRepository {
     }
 
     override fun clear() {
+        tableDirPath.toFile().deleteRecursively()
     }
 
     fun initTable() {
@@ -58,6 +56,19 @@ class WiseSayingFileRepository : WiseSayingRepository {
     }
 
     fun loadLastId(): Int {
-        return tableDirPath.resolve("lastId.txt").toFile().readText().toIntOrNull() ?: 0
+        return tableDirPath.resolve("lastId.txt").toFile().run {
+            if (!exists()) {
+                return 1
+            }
+            return readText().toInt()
+        }
+    }
+
+    fun getNextId(): Int {
+        // also 는 람다의 파라미터 it 으로 넘어온다. 반환은 람다값이 아니라, 객체 자신이다
+        // 부수작업을 끝내고 loadLastId의 가중값을 바로 반환하려면 also 가 적합하다
+        return loadLastId().also {
+            saveLastId(it + 1)
+        }
     }
 }

@@ -4,7 +4,6 @@ import WiseSayingController
 import WiseSayingService
 import com.domain.wisesaying.controller.SystemController
 import com.domain.wisesaying.repository.WiseSayingFileRepository
-import com.domain.wisesaying.repository.WiseSayingMemRepository
 
 object SingletonScope {
     val wiseSayingRepository by lazy { WiseSayingFileRepository() }

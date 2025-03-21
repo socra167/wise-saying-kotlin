@@ -3,9 +3,16 @@ package domain.wisesaying.repository
 import com.domain.wisesaying.entity.WiseSaying
 import com.global.SingletonScope.wiseSayingRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class WiseSayingFileRepositoryTest {
+
+    @BeforeEach
+    fun beforeEach() {
+        wiseSayingRepository.clear()
+        wiseSayingRepository.initTable()
+    }
 
     @Test
     fun `save`() {
@@ -28,22 +35,14 @@ class WiseSayingFileRepositoryTest {
     }
 
     @Test
-    fun findAll() {
+    fun `명언 2개 저장`() {
+        wiseSayingRepository
+            .save(WiseSaying(saying = "인생은 짧고, 예술은 길다.", author = "헨리 장"))
+        wiseSayingRepository
+            .save(WiseSaying(saying = "내 죽음을 적에게 알리지 말라", author = "이순신"))
 
-    }
+        val lastId = wiseSayingRepository.loadLastId()
 
-    @Test
-    fun findById() {
-
-    }
-
-    @Test
-    fun remove() {
-
-    }
-
-    @Test
-    fun clear() {
-
+        assertThat(lastId).isEqualTo(3)
     }
 }
