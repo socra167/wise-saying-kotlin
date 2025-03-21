@@ -1,7 +1,7 @@
 package com
 
+import WiseSayingController
 import com.domain.wisesaying.controller.SystemController
-import com.domain.wisesaying.controller.WiseSayingController
 import com.global.Request
 
 class App {
