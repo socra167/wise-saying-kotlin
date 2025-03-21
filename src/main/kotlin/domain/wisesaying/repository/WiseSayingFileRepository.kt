@@ -52,4 +52,12 @@ class WiseSayingFileRepository : WiseSayingRepository {
             }
         }
     }
+
+    fun saveLastId(id: Int) {
+        tableDirPath.resolve("lastId.txt").toFile().writeText(id.toString())
+    }
+
+    fun loadLastId(): Int {
+        return tableDirPath.resolve("lastId.txt").toFile().readText().toIntOrNull() ?: 0
+    }
 }

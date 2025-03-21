@@ -22,6 +22,12 @@ class WiseSayingFileRepositoryTest {
     }
 
     @Test
+    fun `saveLastId, loadLastId`() {
+        wiseSayingRepository.saveLastId(10)
+        assertThat(wiseSayingRepository.loadLastId()).isEqualTo(10)
+    }
+
+    @Test
     fun findAll() {
 
     }
