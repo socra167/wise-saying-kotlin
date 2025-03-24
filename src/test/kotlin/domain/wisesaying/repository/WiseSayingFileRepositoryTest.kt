@@ -1,5 +1,6 @@
 package domain.wisesaying.repository
 
+import TestBot
 import com.domain.wisesaying.entity.WiseSaying
 import com.global.SingletonScope.wiseSayingRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -78,5 +79,23 @@ class WiseSayingFileRepositoryTest {
         wiseSayingRepository.delete(wiseSaying)
 
         assertThat(wiseSayingRepository.findById(wiseSaying.id)).isNull()
+    }
+
+    @Test
+    fun `빌드`() {
+        val result = TestBot.run(
+            """
+             등록
+             나의 죽음을 적들에게 알리지 말라.
+             충무공 이순신
+             등록
+             천재는 99%의 노력과 1%의 영감이다.
+             에디슨
+             빌드
+         """
+        )
+
+        assertThat(result)
+            .contains("data.json 파일의 내용이 갱신되었습니다.");
     }
 }

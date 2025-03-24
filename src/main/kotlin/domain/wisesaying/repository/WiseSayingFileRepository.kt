@@ -2,6 +2,7 @@ package com.domain.wisesaying.repository
 
 import com.domain.wisesaying.entity.WiseSaying
 import com.global.AppConfig
+import com.standard.JsonUtil
 import java.nio.file.Path
 
 class WiseSayingFileRepository : WiseSayingRepository {
@@ -32,7 +33,7 @@ class WiseSayingFileRepository : WiseSayingRepository {
         // endsWith() 로 해도 되지만, extension 으로 확장자명을 불러올 수 있다
         return tableDirPath.toFile()
             .listFiles()
-            ?.filter {it.extension == "json"}
+            ?.filter { it.extension == "json" }
             ?.map { WiseSaying.fromJson(it.readText()) }
             .orEmpty()
     }
@@ -78,6 +79,16 @@ class WiseSayingFileRepository : WiseSayingRepository {
         // 부수작업을 끝내고 loadLastId의 가중값을 바로 반환하려면 also 가 적합하다
         return loadLastId().also {
             saveLastId(it + 1)
+        }
+    }
+
+    fun build() {
+        val mapList = findAll().map {
+            it.map
+        }
+
+        val result = JsonUtil.listToJson(mapList).also {
+            tableDirPath.resolve("data.json").toFile().writeText(it)
         }
     }
 }

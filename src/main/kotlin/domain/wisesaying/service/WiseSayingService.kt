@@ -23,4 +23,8 @@ class WiseSayingService {
     fun modify(wiseSaying: WiseSaying, saying: String, author: String): WiseSaying {
         return wiseSayingRepository.save(wiseSaying.copy(saying = saying, author = author))
     }
+
+    fun build() {
+        wiseSayingRepository.build()
+    }
 }
