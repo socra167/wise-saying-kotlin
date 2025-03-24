@@ -87,8 +87,18 @@ class WiseSayingFileRepository : WiseSayingRepository {
             it.map
         }
 
-        val result = JsonUtil.listToJson(mapList).also {
+        JsonUtil.listToJson(mapList).also {
             tableDirPath.resolve("data.json").toFile().writeText(it)
         }
+    }
+
+    override fun findBySayingLike(keyword: String): List<WiseSaying> {
+        if (keyword.isBlank()) return findAll()
+        return findAll().filter { it.saying.contains(keyword) }
+    }
+
+    override fun findByAuthorLike(keyword: String): List<WiseSaying> {
+        if (keyword.isBlank()) return findAll()
+        return findAll().filter { it.author.contains(keyword) }
     }
 }
