@@ -43,7 +43,8 @@ class WiseSayingFileRepository : WiseSayingRepository {
             ?.let { return WiseSaying.fromJson(it.readText()) }
     }
 
-    override fun remove(wiseSaying: WiseSaying) {
+    override fun delete(wiseSaying: WiseSaying) {
+        tableDirPath.resolve("${wiseSaying.id}.json").toFile().delete()
     }
 
     override fun clear() {
@@ -72,7 +73,7 @@ class WiseSayingFileRepository : WiseSayingRepository {
         }
     }
 
-    fun getNextId(): Int {
+    private fun getNextId(): Int {
         // also 는 람다의 파라미터 it 으로 넘어온다. 반환은 람다값이 아니라, 객체 자신이다
         // 부수작업을 끝내고 loadLastId의 가중값을 바로 반환하려면 also 가 적합하다
         return loadLastId().also {

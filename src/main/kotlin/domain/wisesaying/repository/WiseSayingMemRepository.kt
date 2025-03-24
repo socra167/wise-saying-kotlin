@@ -23,7 +23,7 @@ class WiseSayingMemRepository : WiseSayingRepository {
         return wiseSayings.toList()
     }
 
-    override fun remove(wiseSaying: WiseSaying) {
+    override fun delete(wiseSaying: WiseSaying) {
         wiseSayings.remove(wiseSaying)
     }
 

@@ -4,7 +4,6 @@ import com.domain.wisesaying.entity.WiseSaying
 import com.global.SingletonScope.wiseSayingRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 class WiseSayingFileRepositoryTest {
@@ -62,7 +61,6 @@ class WiseSayingFileRepositoryTest {
     }
 
     @Test
-    @DisplayName("display_name_value")
     fun findById() {
         val wiseSaying = wiseSayingRepository
             .save(WiseSaying(saying = "내 죽음을 적에게 알리지 말라", author = "이순신"))
@@ -70,5 +68,15 @@ class WiseSayingFileRepositoryTest {
         val result = wiseSayingRepository.findById(1)
 
         assertThat(result).isEqualTo(wiseSaying)
+    }
+
+    @Test
+    fun `delete`() {
+        val wiseSaying = wiseSayingRepository
+            .save(WiseSaying(saying = "나의 죽음을 적들에게 알리지 말라.", author = "충무공 이순신"))
+
+        wiseSayingRepository.delete(wiseSaying)
+
+        assertThat(wiseSayingRepository.findById(wiseSaying.id)).isNull()
     }
 }

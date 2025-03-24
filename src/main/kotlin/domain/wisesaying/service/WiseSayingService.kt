@@ -13,7 +13,7 @@ class WiseSayingService {
     }
 
     fun delete(wiseSaying: WiseSaying) {
-        wiseSayingRepository.remove(wiseSaying)
+        wiseSayingRepository.delete(wiseSaying)
     }
 
     fun getItem(id: Int): WiseSaying? {
