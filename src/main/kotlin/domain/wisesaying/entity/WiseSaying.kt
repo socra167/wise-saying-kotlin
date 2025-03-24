@@ -27,8 +27,6 @@ data class WiseSaying(
             "author" to author
         )
 
-
-
     companion object {
         fun fromJson(jsonStr: String): WiseSaying {
             val jsonMap = JsonUtil.jsonStrToMap(jsonStr)
