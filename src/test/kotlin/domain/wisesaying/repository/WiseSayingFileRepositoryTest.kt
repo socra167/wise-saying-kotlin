@@ -4,6 +4,7 @@ import com.domain.wisesaying.entity.WiseSaying
 import com.global.SingletonScope.wiseSayingRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 class WiseSayingFileRepositoryTest {
@@ -58,5 +59,16 @@ class WiseSayingFileRepositoryTest {
 
         assertThat(count).isEqualTo(2)
         assertThat(result).containsExactly(wiseSaying1, wiseSaying2)
+    }
+
+    @Test
+    @DisplayName("display_name_value")
+    fun findById() {
+        val wiseSaying = wiseSayingRepository
+            .save(WiseSaying(saying = "내 죽음을 적에게 알리지 말라", author = "이순신"))
+
+        val result = wiseSayingRepository.findById(1)
+
+        assertThat(result).isEqualTo(wiseSaying)
     }
 }
