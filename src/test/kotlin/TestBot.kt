@@ -35,5 +35,12 @@ class TestBot {
                 return out.toString().trim().replace("\\r\\n", "\\n")
             }
         }
+
+        fun makeSampleData(size: Int) {
+            val input = (1..size).joinToString(separator = "\n") { i ->
+                "등록\n명언 ${i}\n작자미상 ${i}\n"
+            }
+            run (input)
+        }
     }
 }

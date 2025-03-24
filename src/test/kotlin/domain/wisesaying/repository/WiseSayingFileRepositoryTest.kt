@@ -122,4 +122,18 @@ class WiseSayingFileRepositoryTest {
             .doesNotContain("1 / 작자미상 / 현재를 사랑하라.")
             .contains("2 / 작자미상 / 과거에 집착하지 마라.")
     }
+
+    @Test
+    fun makeSampleData() {
+        TestBot.makeSampleData(10)
+
+        val out = TestBot.run(
+            """
+                목록
+            """.trimIndent()
+        )
+
+        assertThat(out).contains("1 / ")
+        assertThat(out).contains("10 / ")
+    }
 }
