@@ -45,4 +45,18 @@ class WiseSayingFileRepositoryTest {
 
         assertThat(lastId).isEqualTo(3)
     }
+
+    @Test
+    fun findAll() {
+        val wiseSaying1 = wiseSayingRepository
+            .save(WiseSaying(saying = "인생은 짧고 예술은 길다.", author = "헨리 장"))
+        val wiseSaying2 = wiseSayingRepository
+            .save(WiseSaying(saying = "내 죽음을 적에게 알리지 말라", author = "이순신"))
+
+        val result = wiseSayingRepository.findAll()
+        val count = result.size
+
+        assertThat(count).isEqualTo(2)
+        assertThat(result).containsExactly(wiseSaying1, wiseSaying2)
+    }
 }

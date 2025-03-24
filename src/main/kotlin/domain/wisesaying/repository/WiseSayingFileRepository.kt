@@ -28,7 +28,13 @@ class WiseSayingFileRepository : WiseSayingRepository {
     }
 
     override fun findAll(): List<WiseSaying> {
-        return emptyList()
+        // listFiles(): Path 에 속해 있는 모든 파일 목록을 가져온다
+        // endsWith() 로 해도 되지만, extension 으로 확장자명을 불러올 수 있다
+        return tableDirPath.toFile()
+            .listFiles()
+            ?.filter {it.extension == "json"}
+            ?.map { WiseSaying.fromJson(it.readText()) }
+            .orEmpty()
     }
 
     override fun findById(id: Int): WiseSaying? {
