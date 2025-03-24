@@ -1,5 +1,7 @@
+
 import com.domain.wisesaying.entity.WiseSaying
 import com.global.SingletonScope
+import com.standard.Page
 
 class WiseSayingService {
     private val wiseSayingRepository = SingletonScope.wiseSayingRepository
@@ -32,6 +34,13 @@ class WiseSayingService {
         return when (keywordType) {
             "author" -> wiseSayingRepository.findByAuthorLike(keyword)
             else -> wiseSayingRepository.findBySayingLike(keyword)
+        }
+    }
+
+    fun findByKeywordPaged(keywordType: String, keyword: String, page: Int, pageSize: Int): Page<WiseSaying> {
+        return when (keywordType) {
+            "author" -> wiseSayingRepository.findByAuthorLikePaged(keyword, page, pageSize)
+            else -> wiseSayingRepository.findBySayingLikePaged(keyword, page, pageSize)
         }
     }
 }

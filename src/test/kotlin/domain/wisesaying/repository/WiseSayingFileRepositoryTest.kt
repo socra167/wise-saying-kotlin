@@ -124,16 +124,74 @@ class WiseSayingFileRepositoryTest {
     }
 
     @Test
-    fun makeSampleData() {
+    fun `목록(페이징) - page=1`() {
         TestBot.makeSampleData(10)
 
-        val out = TestBot.run(
+        val result = TestBot.run(
             """
-                목록
-            """.trimIndent()
+             목록
+             """
         )
 
-        assertThat(out).contains("1 / ")
-        assertThat(out).contains("10 / ")
+        assertThat(result)
+            .contains("10 / 작자미상 / 명언 10")
+            .contains("6 / 작자미상 / 명언 6")
+            .doesNotContain("5 / 작자미상 / 명언 5")
+            .doesNotContain("1 / 작자미상 / 명언 1")
+            .contains("페이지 : [1] 2")
+    }
+
+    @Test
+    fun `목록(페이징) - page=2`() {
+        TestBot.makeSampleData(10)
+
+        val result = TestBot.run(
+            """
+             목록?page=2
+             """
+        )
+
+        assertThat(result)
+            .doesNotContain("10 / 작자미상 / 명언 10")
+            .doesNotContain("6 / 작자미상 / 명언 6")
+            .contains("5 / 작자미상 / 명언 5")
+            .contains("1 / 작자미상 / 명언 1")
+            .contains("페이지 : 1 [2]")
+    }
+
+    @Test
+    fun `목록?page=2&keywordType=content&keyword=명언`() {
+        TestBot.makeSampleData(10)
+
+        val result = TestBot.run(
+            """
+             목록?page=2&keywordType=content&keyword=명언
+             """.trimIndent()
+        )
+
+        assertThat(result)
+            .doesNotContain("10 / 작자미상 / 명언 10")
+            .doesNotContain("6 / 작자미상 / 명언 6")
+            .contains("5 / 작자미상 / 명언 5")
+            .contains("1 / 작자미상 / 명언 1")
+            .contains("페이지 : 1 [2]")
+    }
+
+    @Test
+    fun `목록?page=1&keywordType=content&keyword=1`() {
+        TestBot.makeSampleData(10)
+
+        val result = TestBot.run(
+            """
+             목록?page=1&keywordType=content&keyword=1
+             """.trimIndent()
+        )
+
+        assertThat(result)
+            .contains("10 / 작자미상 / 명언 10")
+            .doesNotContain("9 / 작자미상 / 명언 9")
+            .doesNotContain("2 / 작자미상 / 명언 2")
+            .contains("1 / 작자미상 / 명언 1")
+            .contains("페이지 : [1]")
     }
 }

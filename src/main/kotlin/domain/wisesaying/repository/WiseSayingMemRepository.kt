@@ -1,6 +1,7 @@
 package com.domain.wisesaying.repository
 
 import com.domain.wisesaying.entity.WiseSaying
+import com.standard.Page
 
 class WiseSayingMemRepository : WiseSayingRepository {
     private var lastId: Int = 0
@@ -37,6 +38,18 @@ class WiseSayingMemRepository : WiseSayingRepository {
 
     override fun findById(id: Int): WiseSaying? {
         return wiseSayings.find { it.id == id }
+    }
+
+    override fun findByAuthorLikePaged(keyword: String, page: Int, pageSize: Int): Page<WiseSaying> {
+        TODO("Not yet implemented")
+    }
+
+    override fun findBySayingLikePaged(keyword: String, page: Int, pageSize: Int): Page<WiseSaying> {
+        TODO("Not yet implemented")
+    }
+
+    override fun findAllPaged(page: Int, pageSize: Int): Page<WiseSaying> {
+        TODO("Not yet implemented")
     }
 
     override fun clear() {

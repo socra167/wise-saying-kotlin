@@ -31,9 +31,19 @@ class WiseSayingController {
 
         println("번호 / 작가 / 명언")
         println("----------------------")
-        wiseSayingService.findByKeyword(keywordType, keyword).forEach {
+
+        val currentPageNo = 1
+        val pageSize = 5
+        val pagedWiseSaying = wiseSayingService.findByKeywordPaged(keywordType, keyword, currentPageNo, pageSize)
+        pagedWiseSaying.content.forEach {
             println("${it.id} / ${it.author} / ${it.saying}")
         }
+
+        val pageMenu = (1..pagedWiseSaying.totalPages).joinToString(" ") { i ->
+            if (i == currentPageNo) "[${i}]" else "$i"
+        }
+
+        println(pageMenu)
     }
 
     fun delete(rq: Request) {

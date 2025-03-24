@@ -3,6 +3,7 @@ package com.domain.wisesaying.repository
 import com.domain.wisesaying.entity.WiseSaying
 import com.global.AppConfig
 import com.standard.JsonUtil
+import com.standard.Page
 import java.nio.file.Path
 
 class WiseSayingFileRepository : WiseSayingRepository {
@@ -35,6 +36,7 @@ class WiseSayingFileRepository : WiseSayingRepository {
             .listFiles()
             ?.filter { it.extension == "json" }
             ?.map { WiseSaying.fromJson(it.readText()) }
+            ?.sortedByDescending { it.id }
             .orEmpty()
     }
 
@@ -92,13 +94,47 @@ class WiseSayingFileRepository : WiseSayingRepository {
         }
     }
 
-    override fun findBySayingLike(keyword: String): List<WiseSaying> {
-        if (keyword.isBlank()) return findAll()
-        return findAll().filter { it.saying.contains(keyword) }
+    override fun findByAuthorLikePaged(keyword: String, page: Int, pageSize: Int): Page<WiseSaying> {
+        val searched = findAll()
+            .filter { it.author.contains(keyword) }
+        val totalCount = searched.size
+
+        if (keyword.isBlank()) return findAllPaged(page, pageSize)
+        val searchedWiseSayings = searched
+            .drop((page - 1) * pageSize)
+            .take(pageSize)
+
+        return Page(searchedWiseSayings, totalCount, page, pageSize)
+    }
+
+    override fun findAllPaged(page: Int, pageSize: Int): Page<WiseSaying> {
+        val totalCount = findAll().size
+        return findAll()
+            .drop((page - 1) * pageSize)
+            .take(pageSize)
+            .let { Page(it, totalCount, page, pageSize) }
+    }
+
+    override fun findBySayingLikePaged(keyword: String, page: Int, pageSize: Int): Page<WiseSaying> {
+        val searched = findAll()
+            .filter { it.saying.contains(keyword) }
+        val totalCount = searched.size
+
+        if (keyword.isBlank()) return findAllPaged(page, pageSize)
+        val searchedWiseSayings = searched
+            .drop((page - 1) * pageSize)
+            .take(pageSize)
+
+        return Page(searchedWiseSayings, totalCount, page, pageSize)
     }
 
     override fun findByAuthorLike(keyword: String): List<WiseSaying> {
         if (keyword.isBlank()) return findAll()
         return findAll().filter { it.author.contains(keyword) }
+    }
+
+    override fun findBySayingLike(keyword: String): List<WiseSaying> {
+        if (keyword.isBlank()) return findAll()
+        return findAll().filter { it.saying.contains(keyword) }
     }
 }
